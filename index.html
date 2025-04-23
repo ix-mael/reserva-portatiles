@@ -202,17 +202,16 @@
             "ARM-02": ["A-203", "A-204", "T-205", "T-208", "A-209", "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"]
         };
 
-        // Inicializar fecha con el día de hoy y deshabilitar sábados, domingos, y festivos
+        // Inicializar fecha con el día de hoy y deshabilitar sábados y domingos
         const today = new Date();
         dateInput.value = today.toISOString().split("T")[0];
 
         dateInput.addEventListener("change", () => {
             const selectedDate = new Date(dateInput.value);
             const day = selectedDate.getDay();
-            const holidays = ["2025-04-25", "2025-12-25"]; // Lista de días festivos
 
-            if (day === 0 || day === 6 || holidays.includes(dateInput.value)) {
-                alert("No se pueden realizar reservas los sábados, domingos o días festivos.");
+            if (day === 0 || day === 6) {
+                alert("No se pueden realizar reservas los sábados o domingos.");
                 dateInput.value = today.toISOString().split("T")[0];
             }
         });
@@ -253,7 +252,20 @@
             // Agregar reserva
             reservations.push({ resource, date, timeSlot, classroom, group, professor });
             renderReservations();
+
+            // Limpiar campos después de la reserva
+            resetForm();
         });
+
+        function resetForm() {
+            resourceSelect.value = "";
+            dateInput.value = today.toISOString().split("T")[0];
+            document.getElementById("time-slot").value = "";
+            classroomSelect.innerHTML = '<option value="" selected disabled>Seleccione primero un recurso</option>';
+            classroomSelect.disabled = true;
+            document.getElementById("group").value = "";
+            document.getElementById("professor").value = "";
+        }
 
         function renderReservations() {
             tableBody.innerHTML = "";
