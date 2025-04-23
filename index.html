@@ -202,9 +202,20 @@
             "ARM-02": ["A-203", "A-204", "T-205", "T-208", "A-209", "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"]
         };
 
-        // Inicializar fecha con el día de hoy
-        const today = new Date().toISOString().split("T")[0];
-        dateInput.value = today;
+        // Inicializar fecha con el día de hoy y deshabilitar sábados, domingos, y festivos
+        const today = new Date();
+        dateInput.value = today.toISOString().split("T")[0];
+
+        dateInput.addEventListener("change", () => {
+            const selectedDate = new Date(dateInput.value);
+            const day = selectedDate.getDay();
+            const holidays = ["2025-04-25", "2025-12-25"]; // Lista de días festivos
+
+            if (day === 0 || day === 6 || holidays.includes(dateInput.value)) {
+                alert("No se pueden realizar reservas los sábados, domingos o días festivos.");
+                dateInput.value = today.toISOString().split("T")[0];
+            }
+        });
 
         resourceSelect.addEventListener("change", () => {
             const selectedResource = resourceSelect.value;
