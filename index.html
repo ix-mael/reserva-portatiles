@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas de Portátiles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #0078d7;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        table th {
+            background-color: #0078d7;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select, .form-group button {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group button {
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #005ea6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Reservas de Portátiles</h1>
+    </header>
+    <div class="container">
+        <h1>Crear una Reserva</h1>
+        <div class="form-group">
+            <label for="resource">Espacio/Recurso a Reservar:</label>
+            <select id="resource">
+                <option value="AR-111">AR-111</option>
+                <option value="AR-114">AR-114</option>
+                <option value="ARM-01">ARM-01</option>
+                <option value="ARM-02">ARM-02</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="group">Grupo:</label>
+            <input type="text" id="group" placeholder="Ejemplo: 2º ESO A">
+        </div>
+        <div class="form-group">
+            <label for="professor">Profesor:</label>
+            <input type="text" id="professor" placeholder="Nombre del profesor">
+        </div>
+        <div class="form-group">
+            <label for="time-slot">Horario:</label>
+            <select id="time-slot">
+                <option value="8:05-9:00">8:05 - 9:00</option>
+                <option value="9:00-9:55">9:00 - 9:55</option>
+                <option value="9:55-10:50">9:55 - 10:50</option>
+                <option value="11:20-12:15">11:20 - 12:15</option>
+                <option value="12:15-13:10">12:15 - 13:10</option>
+                <option value="13:10-14:05">13:10 - 14:05</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button id="submit-reservation">Reservar</button>
+        </div>
+        <h1>Calendario de Reservas</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Recurso</th>
+                    <th>Grupo</th>
+                    <th>Profesor</th>
+                    <th>Horario</th>
+                </tr>
+            </thead>
+            <tbody id="reservation-table">
+                <!-- Aquí se mostrarán las reservas -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const reservations = [];
+        const tableBody = document.getElementById("reservation-table");
+        const submitButton = document.getElementById("submit-reservation");
+
+        submitButton.addEventListener("click", () => {
+            const resource = document.getElementById("resource").value;
+            const group = document.getElementById("group").value;
+            const professor = document.getElementById("professor").value;
+            const timeSlot = document.getElementById("time-slot").value;
+
+            // Validar duplicados
+            const isDuplicate = reservations.some(res => res.resource === resource && res.timeSlot === timeSlot);
+            if (isDuplicate) {
+                alert("Ya existe una reserva para este recurso en el horario seleccionado.");
+                return;
+            }
+
+            // Agregar reserva
+            reservations.push({ resource, group, professor, timeSlot });
+            renderReservations();
+        });
+
+        function renderReservations() {
+            tableBody.innerHTML = "";
+            reservations.forEach(res => {
+                const row = `<tr>
+                    <td>${res.resource}</td>
+                    <td>${res.group}</td>
+                    <td>${res.professor}</td>
+                    <td>${res.timeSlot}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+    </script>
+</body>
+</html>
