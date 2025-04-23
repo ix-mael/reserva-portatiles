@@ -100,6 +100,7 @@
             <div class="form-group">
                 <label for="resource">Recurso:</label>
                 <select id="resource">
+                    <option value="" selected disabled>Seleccione un recurso</option>
                     <option value="AR-111">AR-111</option>
                     <option value="AR-114">AR-114</option>
                     <option value="ARM-01">ARM-01</option>
@@ -113,6 +114,7 @@
             <div class="form-group">
                 <label for="time-slot">Horario:</label>
                 <select id="time-slot">
+                    <option value="" selected disabled>Seleccione un horario</option>
                     <option value="8:05-9:00">8:05 - 9:00</option>
                     <option value="9:00-9:55">9:00 - 9:55</option>
                     <option value="9:55-10:50">9:55 - 10:50</option>
@@ -123,13 +125,14 @@
             </div>
             <div class="form-group">
                 <label for="classroom">Aula:</label>
-                <select id="classroom">
-                    <!-- Opciones dinámicas según el recurso seleccionado -->
+                <select id="classroom" disabled>
+                    <option value="" selected disabled>Seleccione primero un recurso</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="group">Grupo:</label>
                 <select id="group">
+                    <option value="" selected disabled>Seleccione un grupo</option>
                     <option value="1A">1A</option>
                     <option value="2A">2A</option>
                     <option value="1B">1B</option>
@@ -190,6 +193,7 @@
         const submitButton = document.getElementById("submit-reservation");
         const resourceSelect = document.getElementById("resource");
         const classroomSelect = document.getElementById("classroom");
+        const dateInput = document.getElementById("date");
 
         const classrooms = {
             "AR-111": ["A-111"],
@@ -198,10 +202,20 @@
             "ARM-02": ["A-203", "A-204", "T-205", "T-208", "A-209", "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"]
         };
 
+        // Inicializar fecha con el día de hoy
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.value = today;
+
         resourceSelect.addEventListener("change", () => {
             const selectedResource = resourceSelect.value;
-            const options = classrooms[selectedResource];
-            classroomSelect.innerHTML = options.map(classroom => `<option value="${classroom}">${classroom}</option>`).join("");
+            if (classrooms[selectedResource]) {
+                const options = classrooms[selectedResource];
+                classroomSelect.innerHTML = options.map(classroom => `<option value="${classroom}">${classroom}</option>`).join("");
+                classroomSelect.disabled = false;
+            } else {
+                classroomSelect.innerHTML = '<option value="" selected disabled>Seleccione primero un recurso</option>';
+                classroomSelect.disabled = true;
+            }
         });
 
         submitButton.addEventListener("click", () => {
@@ -211,6 +225,12 @@
             const classroom = document.getElementById("classroom").value;
             const group = document.getElementById("group").value;
             const professor = document.getElementById("professor").value;
+
+            // Validación de campos
+            if (!resource || !date || !timeSlot || !classroom || !group || !professor) {
+                alert("Por favor, complete todos los campos antes de realizar la reserva.");
+                return;
+            }
 
             // Validar duplicados
             const isDuplicate = reservations.some(res => res.resource === resource && res.date === date && res.timeSlot === timeSlot);
@@ -238,9 +258,6 @@
                 tableBody.innerHTML += row;
             });
         }
-
-        // Inicializar aulas según recurso seleccionado
-        resourceSelect.dispatchEvent(new Event("change"));
     </script>
 </body>
 </html>
