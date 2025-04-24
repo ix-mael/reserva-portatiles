@@ -120,7 +120,7 @@
             <div id="message" class="message">¡Reserva realizada con éxito!</div>
             <div class="form-group">
                 <label for="resource">Recurso:</label>
-                <select id="resource">
+                <select id="resource" onchange="updateClassroomOptions()">
                     <option value="" selected disabled>Seleccione un recurso</option>
                     <option value="AR-111">AR-111</option>
                     <option value="AR-114">AR-114</option>
@@ -228,7 +228,14 @@
             const message = document.getElementById("message");
             message.style.display = "block";
 
-            // Limpiar campos del formulario
+            // Ocultar mensaje después de 3 segundos y resetear el formulario
+            setTimeout(() => {
+                message.style.display = "none";
+                resetForm();
+            }, 3000);
+        }
+
+        function resetForm() {
             document.getElementById("resource").value = "";
             document.getElementById("date").value = "";
             document.getElementById("time").value = "";
