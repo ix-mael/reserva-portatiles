@@ -13,12 +13,14 @@
             padding: 0;
             background-color: #f4f4f9;
         }
+
         header {
             background-color: #5d6d7e;
             color: white;
             padding: 1rem;
             text-align: center;
         }
+
         .container {
             display: flex;
             flex-direction: row;
@@ -29,6 +31,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .form-container {
             flex: 2;
             margin-right: 1rem;
@@ -36,6 +39,7 @@
             padding: 1rem;
             border-radius: 8px;
         }
+
         .rules-container {
             flex: 1;
             background: #5d6d7e;
@@ -43,33 +47,40 @@
             padding: 1rem;
             border-radius: 8px;
         }
+
         h1, h2 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
+
         .form-group {
             margin-bottom: 1rem;
         }
+
         .form-group label {
             font-weight: bold;
             display: block;
             margin-bottom: 0.5rem;
         }
+
         .form-group input, .form-group select, .form-group button {
             width: 100%;
             padding: 0.5rem;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .form-group button {
             background-color: #0078d7;
             color: white;
             border: none;
             cursor: pointer;
         }
+
         .form-group button:hover {
             background-color: #005ea6;
         }
+
         #calendar-container {
             margin-top: 2rem;
             background: white;
@@ -77,10 +88,12 @@
             padding: 1rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         #calendar {
             max-width: 100%;
             margin: 0 auto;
         }
+
         .message {
             margin-top: 1rem;
             padding: 1rem;
@@ -90,6 +103,7 @@
             border-radius: 4px;
             display: none;
         }
+
         .error-message {
             margin-top: 1rem;
             padding: 1rem;
@@ -115,7 +129,7 @@
             <div id="error-message" class="error-message"></div>
             <div class="form-group">
                 <label for="resource">Recurso:</label>
-                <select id="resource" onchange="updateClassroomOptions()">
+                <select id="resource">
                     <option value="" selected disabled>Seleccione un recurso</option>
                     <option value="AR-111">AR-111</option>
                     <option value="AR-114">AR-114</option>
@@ -140,44 +154,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="classroom">Aula:</label>
-                <select id="classroom">
-                    <option value="" selected disabled>Seleccione un aula</option>
-                    <option value="A-203">A-203</option>
-                    <option value="A-204">A-204</option>
-                    <option value="T-205">T-205</option>
-                    <option value="T-208">T-208</option>
-                    <option value="A-209">A-209</option>
-                    <option value="A-210">A-210</option>
-                    <option value="A-211">A-211</option>
-                    <option value="A-212">A-212</option>
-                    <option value="A-213">A-213</option>
-                    <option value="A-214">A-214</option>
-                    <option value="T-215">T-215</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="group">Grupo:</label>
-                <select id="group">
-                    <option value="" selected disabled>Seleccione un grupo</option>
-                    <option value="1A">1A</option>
-                    <option value="2A">2A</option>
-                    <option value="1B">1B</option>
-                    <option value="2B">2B</option>
-                    <option value="1C">1C</option>
-                    <option value="2C">2C</option>
-                    <option value="1D">1D</option>
-                    <option value="2D">2D</option>
-                    <option value="1E">1E</option>
-                    <option value="2E">2E</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="teacher">Profesor:</label>
                 <input type="text" id="teacher" placeholder="Nombre del Profesor">
             </div>
             <div class="form-group">
-                <button type="button" id="submit" onclick="handleReservation()">Reservar</button>
+                <button type="button" onclick="handleReservation()">Reservar</button>
             </div>
         </div>
 
@@ -185,18 +166,15 @@
         <div class="rules-container">
             <h2>Normas para el Profesorado</h2>
             <ol>
-                <li><strong>Reserva Obligatoria:</strong> Los Armarios deben ser reservados a través de la página de reservas antes de ser utilizados. No se permitirá el uso de portátiles sin reserva previa.</li>
-                <li><strong>Apagar los portátiles:</strong> Al finalizar el uso, los portátiles deben apagarse correctamente para garantizar su buen funcionamiento.</li>
-                <li><strong>Colocarlos en orden:</strong> Los portátiles deben ser devueltos a su lugar correspondiente, organizados según su número asignado.</li>
-                <li><strong>Informar problemas técnicos:</strong> Si el portátil presenta algún problema (pantalla rota, teclas que no funcionan, fallos en el sistema, etc.), informa inmediatamente al equipo de soporte.</li>
-                <li><strong>Comportamiento de los Estudiantes con los Portátiles:</strong> Los profesores deben supervisar constantemente a los estudiantes cuando utilicen los portátiles en clase, garantizando que los dispositivos sean utilizados de manera adecuada.</li>
-                <li><strong>Devolución Puntual:</strong> Los portátiles deben ser devueltos a tiempo en el armario correspondiente, apagados correctamente y sin programas abiertos.</li>
+                <li><strong>Reserva Obligatoria:</strong> Los Armarios deben ser reservados a través de la página de reservas antes de ser utilizados.</li>
+                <li><strong>Apagar los portátiles:</strong> Al finalizar el uso, los portátiles deben apagarse correctamente.</li>
+                <li><strong>Colocarlos en orden:</strong> Los portátiles deben ser devueltos a su lugar correspondiente.</li>
+                <li><strong>Informar problemas técnicos:</strong> Si el portátil presenta algún problema, informa inmediatamente al equipo de soporte.</li>
             </ol>
-            <p>Estas normas son esenciales para mantener el orden y la funcionalidad de los equipos. ¡Gracias por tu colaboración!</p>
         </div>
     </div>
 
-    <!-- Contenedor del Calendario -->
+    <!-- Calendario -->
     <div id="calendar-container">
         <h2>Calendario de Reservas</h2>
         <div id="calendar"></div>
@@ -215,67 +193,65 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: [
-                    {
-                        title: 'Reserva AR-111',
-                        start: '2025-04-24T08:05:00',
-                        color: '#0078d7'
-                    },
-                    {
-                        title: 'Reserva AR-114',
-                        start: '2025-04-25T09:00:00',
-                        color: '#e74c3c'
-                    },
-                    {
-                        title: 'Reserva ARM-01',
-                        start: '2025-04-26T11:20:00',
-                        color: '#2ecc71'
-                    }
-                ]
+                events: []
             });
             calendar.render();
-        });
 
-        function handleReservation() {
-            const resource = document.getElementById("resource").value;
-            const date = document.getElementById("date").value;
-            const time = document.getElementById("time").value;
-            const classroom = document.getElementById("classroom").value;
-            const group = document.getElementById("group").value;
-            const teacher = document.getElementById("teacher").value;
+            // Función para manejar la reserva
+            window.handleReservation = function () {
+                const resource = document.getElementById("resource").value;
+                const date = document.getElementById("date").value;
+                const time = document.getElementById("time").value;
+                const teacher = document.getElementById("teacher").value;
 
-            const errorMessage = document.getElementById("error-message");
-            errorMessage.style.display = "none";
-            errorMessage.innerHTML = "";
+                const errorMessage = document.getElementById("error-message");
+                const message = document.getElementById("message");
 
-            if (!resource || !date || !time || !classroom || !group || !teacher) {
-                errorMessage.style.display = "block";
-                if (!resource) errorMessage.innerHTML += "<p>El campo 'Recurso' es obligatorio.</p>";
-                if (!date) errorMessage.innerHTML += "<p>El campo 'Fecha' es obligatorio.</p>";
-                if (!time) errorMessage.innerHTML += "<p>El campo 'Horario' es obligatorio.</p>";
-                if (!classroom) errorMessage.innerHTML += "<p>El campo 'Aula' es obligatorio.</p>";
-                if (!group) errorMessage.innerHTML += "<p>El campo 'Grupo' es obligatorio.</p>";
-                if (!teacher) errorMessage.innerHTML += "<p>El campo 'Profesor' es obligatorio.</p>";
-                return;
-            }
-
-            const message = document.getElementById("message");
-            message.style.display = "block";
-
-            setTimeout(() => {
+                errorMessage.style.display = "none";
                 message.style.display = "none";
-                resetForm();
-            }, 3000);
-        }
 
-        function resetForm() {
-            document.getElementById("resource").value = "";
-            document.getElementById("date").value = "";
-            document.getElementById("time").value = "";
-            document.getElementById("classroom").value = "";
-            document.getElementById("group").value = "";
-            document.getElementById("teacher").value = "";
-        }
+                if (!resource || !date || !time || !teacher) {
+                    errorMessage.style.display = "block";
+                    errorMessage.innerHTML = "Todos los campos son obligatorios.";
+                    return;
+                }
+
+                // Validar duplicados
+                const eventExists = calendar.getEvents().some(event => {
+                    return event.extendedProps.resource === resource &&
+                           event.start.toISOString().startsWith(date) &&
+                           event.extendedProps.time === time;
+                });
+
+                if (eventExists) {
+                    errorMessage.style.display = "block";
+                    errorMessage.innerHTML = "Ya existe una reserva para este recurso en la misma fecha y horario.";
+                    return;
+                }
+
+                // Añadir evento al calendario
+                calendar.addEvent({
+                    title: `Reserva ${resource}`,
+                    start: `${date}T${time.split('-')[0]}`,
+                    end: `${date}T${time.split('-')[1]}`,
+                    color: getColorForResource(resource),
+                    extendedProps: { resource, time }
+                });
+
+                message.style.display = "block";
+                message.innerHTML = "¡Reserva realizada con éxito!";
+            };
+
+            function getColorForResource(resource) {
+                const colors = {
+                    "AR-111": "#0078d7",
+                    "AR-114": "#e74c3c",
+                    "ARM-01": "#2ecc71",
+                    "ARM-02": "#f1c40f"
+                };
+                return colors[resource] || "#95a5a6";
+            }
+        });
     </script>
 </body>
 </html>
