@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C.F.G.Básico. Reserva de Portátiles</title>
+    <title>Reservas de Portátiles</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -14,14 +14,10 @@
             background-color: #f4f4f9;
         }
         header {
-            background-color: #5d6d7e;
+            background-color: #0078d7;
             color: white;
             padding: 1rem;
-            text-align: left;
-        }
-        header h1 {
-            font-size: 2rem;
-            margin: 0;
+            text-align: center;
         }
         .container {
             display: flex;
@@ -36,9 +32,6 @@
         .form-container {
             flex: 2;
             margin-right: 1rem;
-            background-color: #e5e7e9;
-            padding: 1rem;
-            border-radius: 8px;
         }
         .rules-container {
             flex: 1;
@@ -127,7 +120,7 @@
 </head>
 <body>
     <header>
-        <h1>C.F.G.Básico. Reserva de Portátiles</h1>
+        <h1>Reservas de Portátiles</h1>
     </header>
     <div class="container">
         <!-- Formulario de Reserva -->
@@ -213,5 +206,103 @@
             <p>Estas normas son esenciales para mantener el orden y la funcionalidad de los equipos. ¡Gracias por tu colaboración!</p>
         </div>
     </div>
+
+    <script>
+        function updateClassroomOptions() {
+            const resource = document.getElementById("resource").value;
+            const classroom = document.getElementById("classroom");
+
+            // Limpiar opciones previas.
+            classroom.innerHTML = "";
+
+            if (resource === "AR-111") {
+                classroom.innerHTML = `<option value="A-111" selected>A-111</option>`;
+                classroom.disabled = true;
+            } else if (resource === "AR-114") {
+                classroom.innerHTML = `<option value="A-114" selected>A-114</option>`;
+                classroom.disabled = true;
+            } else if (resource === "ARM-01" || resource === "ARM-02") {
+                const armOptions = [
+                    "A-203", "A-204", "T-205", "T-208", "A-209",
+                    "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"
+                ];
+                armOptions.forEach(aula => {
+                    const option = document.createElement("option");
+                    option.value = aula;
+                    option.textContent = aula;
+                    classroom.appendChild(option);
+                });
+                classroom.disabled = false;
+            }
+        }
+
+        function handleReservation() {
+            const resource = document.getElementById("resource").value;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            const classroom = document.getElementById("classroom").value;
+            const group = document.getElementById("group").value;
+            const teacher = document.getElementById("teacher").value;
+
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.style.display = "none";
+            errorMessage.innerHTML = "";
+
+            if (!resource || !date || !time || !classroom || !group || !teacher) {
+                errorMessage.style.display = "block";
+                if (!resource) errorMessage.innerHTML += "<p>El campo 'Recurso' es obligatorio.</p>";
+                if (!date) errorMessage.innerHTML += "<p>El campo 'Fecha' es obligatorio.</p>";
+                if (!time) errorMessage.innerHTML += "<p>El campo 'Horario' es obligatorio.</p>";
+                if (!classroom) errorMessage.innerHTML += "<p>El campo 'Aula' es obligatorio.</p>";
+                if (!group) errorMessage.innerHTML += "<p>El campo 'Grupo' es obligatorio.</p>";
+                if (!teacher) errorMessage.innerHTML += "<p>El campo 'Profesor' es obligatorio.</p>";
+                return;
+            }
+
+            if (!isValidDate(date)) {
+                errorMessage.style.display = "block";
+                errorMessage.innerHTML = "<p>No se puede reservar para fechas pasadas ni para sábados o domingos.</p>";
+                return;
+            }
+
+            // Mostrar mensaje de confirmación
+            const message = document.getElementById("message");
+            message.style.display = "block";
+
+            // Ocultar mensaje después de 3 segundos y resetear el formulario
+            setTimeout(() => {
+                message.style.display = "none";
+                resetForm();
+            }, 3000);
+        }
+
+        function isValidDate(date) {
+            const selectedDate = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Verificar si la fecha es anterior al día actual
+            if (selectedDate < today) {
+                return false;
+            }
+
+            // Comprobar si es sábado (6) o domingo (0)
+            const dayOfWeek = selectedDate.getDay();
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function resetForm() {
+            document.getElementById("resource").value = "";
+            document.getElementById("date").value = "";
+            document.getElementById("time").value = "";
+            document.getElementById("classroom").innerHTML = "<option value='' selected disabled>Seleccione un aula</option>";
+            document.getElementById("group").value = "";
+            document.getElementById("teacher").value = "";
+        }
+    </script>
 </body>
 </html>
