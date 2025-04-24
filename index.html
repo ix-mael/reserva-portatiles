@@ -107,6 +107,15 @@
             border-radius: 4px;
             display: none;
         }
+        .error-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +127,7 @@
         <div class="form-container">
             <h1>Crear una Reserva</h1>
             <div id="message" class="message">¡Reserva realizada con éxito!</div>
+            <div id="error-message" class="error-message"></div>
             <div class="form-group">
                 <label for="resource">Recurso:</label>
                 <select id="resource" onchange="updateClassroomOptions()">
@@ -224,6 +234,28 @@
         }
 
         function handleReservation() {
+            const resource = document.getElementById("resource").value;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            const classroom = document.getElementById("classroom").value;
+            const group = document.getElementById("group").value;
+            const teacher = document.getElementById("teacher").value;
+
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.style.display = "none";
+            errorMessage.innerHTML = "";
+
+            if (!resource || !date || !time || !classroom || !group || !teacher) {
+                errorMessage.style.display = "block";
+                if (!resource) errorMessage.innerHTML += "<p>El campo 'Recurso' es obligatorio.</p>";
+                if (!date) errorMessage.innerHTML += "<p>El campo 'Fecha' es obligatorio.</p>";
+                if (!time) errorMessage.innerHTML += "<p>El campo 'Horario' es obligatorio.</p>";
+                if (!classroom) errorMessage.innerHTML += "<p>El campo 'Aula' es obligatorio.</p>";
+                if (!group) errorMessage.innerHTML += "<p>El campo 'Grupo' es obligatorio.</p>";
+                if (!teacher) errorMessage.innerHTML += "<p>El campo 'Profesor' es obligatorio.</p>";
+                return;
+            }
+
             // Mostrar mensaje de confirmación
             const message = document.getElementById("message");
             message.style.display = "block";
