@@ -19,13 +19,24 @@
         }
         .container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             max-width: 1200px;
             margin: 2rem auto;
             background: white;
             padding: 1rem;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-container {
+            flex: 2;
+            margin-right: 1rem;
+        }
+        .rules-container {
+            flex: 1;
+            background: #f9f9f9;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
         }
         h1 {
             font-size: 1.5rem;
@@ -35,7 +46,7 @@
             margin-bottom: 1rem;
         }
         .form-group label {
-            font-weight: bold; /* Etiquetas en negrita */
+            font-weight: bold;
             display: block;
             margin-bottom: 0.5rem;
         }
@@ -86,157 +97,88 @@
         <h1>Reservas de Portátiles</h1>
     </header>
     <div class="container">
-        <h1>Crear una Reserva</h1>
-        <div class="form-group">
-            <label for="resource">Recurso:</label>
-            <select id="resource">
-                <option value="" selected disabled>Seleccione un recurso</option>
-                <option value="AR-111">AR-111</option>
-                <option value="AR-114">AR-114</option>
-                <option value="ARM-01">ARM-01</option>
-                <option value="ARM-02">ARM-02</option>
-            </select>
+        <!-- Formulario de Reserva -->
+        <div class="form-container">
+            <h1>Crear una Reserva</h1>
+            <div class="form-group">
+                <label for="resource">Recurso:</label>
+                <select id="resource">
+                    <option value="" selected disabled>Seleccione un recurso</option>
+                    <option value="AR-111">AR-111</option>
+                    <option value="AR-114">AR-114</option>
+                    <option value="ARM-01">ARM-01</option>
+                    <option value="ARM-02">ARM-02</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Fecha:</label>
+                <input type="date" id="date">
+            </div>
+            <div class="form-group">
+                <label for="time">Horario:</label>
+                <select id="time">
+                    <option value="" selected disabled>Seleccione un intervalo horario</option>
+                    <option value="8:05-9:00">8:05 - 9:00</option>
+                    <option value="9:00-9:55">9:00 - 9:55</option>
+                    <option value="9:55-10:50">9:55 - 10:50</option>
+                    <option value="11:20-12:15">11:20 - 12:15</option>
+                    <option value="12:15-13:10">12:15 - 13:10</option>
+                    <option value="13:10-14:05">13:10 - 14:05</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="classroom">Aula:</label>
+                <select id="classroom">
+                    <option value="" selected disabled>Seleccione un aula</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="group">Grupo:</label>
+                <select id="group">
+                    <option value="" selected disabled>Seleccione un grupo</option>
+                    <option value="1A">1A</option>
+                    <option value="2A">2A</option>
+                    <option value="1B">1B</option>
+                    <option value="2B">2B</option>
+                    <option value="1C">1C</option>
+                    <option value="2C">2C</option>
+                    <option value="1D">1D</option>
+                    <option value="2D">2D</option>
+                    <option value="1E">1E</option>
+                    <option value="2E">2E</option>
+                    <option value="1F">1F</option>
+                    <option value="2F">2F</option>
+                    <option value="1G">1G</option>
+                    <option value="2G">2G</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="teacher">Profesor:</label>
+                <input type="text" id="teacher" placeholder="Nombre del Profesor">
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submit">Reservar</button>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="date">Fecha:</label>
-            <input type="date" id="date">
-        </div>
-        <div class="form-group">
-            <label for="time-slot">Horario:</label>
-            <select id="time-slot">
-                <option value="" selected disabled>Seleccione un horario</option>
-                <option value="8:05-9:00">8:05 - 9:00</option>
-                <option value="9:00-9:55">9:00 - 9:55</option>
-                <option value="9:55-10:50">9:55 - 10:50</option>
-                <option value="11:20-12:15">11:20 - 12:15</option>
-                <option value="12:15-13:10">12:15 - 13:10</option>
-                <option value="13:10-14:05">13:10 - 14:05</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="classroom">Aula:</label>
-            <select id="classroom" disabled>
-                <option value="" selected disabled>Seleccione primero un recurso</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="professor">Profesor:</label>
-            <input type="text" id="professor" placeholder="Nombre del profesor">
-        </div>
-        <div class="form-group">
-            <button id="submit-reservation">Reservar</button>
+
+        <!-- Normas para el Profesorado -->
+        <div class="rules-container">
+            <h2>Normas del Profesorado</h2>
+            <ol>
+                <li><strong>Reserva Obligatoria:</strong> Los Armarios deben ser reservados a través de la página de reservas antes de ser utilizados. No se permitirá el uso de portátiles sin reserva previa.</li>
+                <li><strong>Apagar los portátiles:</strong> Al finalizar el uso, los portátiles deben apagarse correctamente para garantizar su buen funcionamiento.</li>
+                <li><strong>Colocarlos en orden:</strong> Los portátiles deben ser devueltos a su lugar correspondiente, organizados según su número asignado.</li>
+                <li><strong>Informar problemas técnicos:</strong> Si el portátil presenta algún problema (pantalla rota, teclas que no funcionan, fallos en el sistema, etc.), informa inmediatamente al equipo de soporte.</li>
+                <li><strong>Comportamiento de los Estudiantes con los Portátiles:</strong> Los profesores deben supervisar constantemente a los estudiantes cuando utilicen los portátiles en clase, garantizando que los dispositivos sean utilizados de manera adecuada.</li>
+                <li><strong>Devolución Puntual:</strong> Los portátiles deben ser devueltos a tiempo en el armario correspondiente, apagados correctamente y sin programas abiertos.</li>
+            </ol>
+            <p>Estas normas son esenciales para mantener el orden y la funcionalidad de los equipos. ¡Gracias por tu colaboración!</p>
         </div>
     </div>
-    <div class="container">
-        <h1>Calendario de Reservas</h1>
-        <div id="calendar">
-            <!-- Calendario generado dinámicamente -->
-        </div>
+
+    <!-- Calendario -->
+    <div id="calendar">
+        <!-- Aquí se generará dinámicamente el calendario -->
     </div>
-    <script>
-        const reservations = [];
-        const submitButton = document.getElementById("submit-reservation");
-        const resourceSelect = document.getElementById("resource");
-        const classroomSelect = document.getElementById("classroom");
-        const dateInput = document.getElementById("date");
-        const professorInput = document.getElementById("professor");
-        const timeSlotSelect = document.getElementById("time-slot");
-        const calendar = document.getElementById("calendar");
-
-        const classrooms = {
-            "AR-111": ["A-111"],
-            "AR-114": ["A-114"],
-            "ARM-01": ["A-203", "A-204", "T-205", "T-208", "A-209", "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"],
-            "ARM-02": ["A-203", "A-204", "T-205", "T-208", "A-209", "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"]
-        };
-
-        const timeSlots = [
-            "8:05-9:00",
-            "9:00-9:55",
-            "9:55-10:50",
-            "11:20-12:15",
-            "12:15-13:10",
-            "13:10-14:05"
-        ];
-
-        // Inicializar fecha de hoy
-        const today = new Date();
-        dateInput.value = today.toISOString().split("T")[0];
-
-        resourceSelect.addEventListener("change", () => {
-            const selectedResource = resourceSelect.value;
-            if (classrooms[selectedResource]) {
-                const options = classrooms[selectedResource];
-                classroomSelect.innerHTML = options.map(classroom => `<option value="${classroom}">${classroom}</option>`).join("");
-                classroomSelect.disabled = false;
-            } else {
-                classroomSelect.innerHTML = '<option value="" selected disabled>Seleccione primero un recurso</option>';
-                classroomSelect.disabled = true;
-            }
-        });
-
-        submitButton.addEventListener("click", () => {
-            const resource = resourceSelect.value;
-            const date = dateInput.value;
-            const timeSlot = timeSlotSelect.value;
-            const classroom = classroomSelect.value;
-            const professor = professorInput.value;
-
-            if (!resource || !date || !timeSlot || !classroom || !professor) {
-                alert("Por favor, complete todos los campos antes de realizar la reserva.");
-                return;
-            }
-
-            reservations.push({ resource, date, timeSlot, classroom, professor });
-            renderCalendar();
-            resetForm();
-        });
-
-        function resetForm() {
-            resourceSelect.value = "";
-            dateInput.value = today.toISOString().split("T")[0];
-            timeSlotSelect.value = "";
-            classroomSelect.innerHTML = '<option value="" selected disabled>Seleccione primero un recurso</option>';
-            classroomSelect.disabled = true;
-            professorInput.value = "";
-        }
-
-        function renderCalendar() {
-            // Limpiar el calendario
-            calendar.innerHTML = "";
-
-            // Crear encabezados
-            const days = ["Horario", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-            days.forEach(day => {
-                const dayElement = document.createElement("div");
-                dayElement.classList.add("day");
-                dayElement.textContent = day;
-                calendar.appendChild(dayElement);
-            });
-
-            // Generar contenido del calendario
-            timeSlots.forEach(slot => {
-                const timeSlotElement = document.createElement("div");
-                timeSlotElement.classList.add("time-slot");
-                timeSlotElement.textContent = slot;
-                calendar.appendChild(timeSlotElement);
-
-                for (let i = 1; i < 6; i++) {
-                    const slotElement = document.createElement("div");
-                    slotElement.classList.add("slot");
-
-                    const reservation = reservations.find(res => res.timeSlot === slot);
-                    if (reservation) {
-                        slotElement.classList.add("reserved");
-                        slotElement.textContent = `${reservation.resource} - ${reservation.classroom} - ${reservation.professor}`;
-                    }
-
-                    calendar.appendChild(slotElement);
-                }
-            });
-        }
-
-        renderCalendar(); // Inicializar calendario vacío
-    </script>
 </body>
 </html>
