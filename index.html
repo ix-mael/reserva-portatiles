@@ -43,6 +43,9 @@
             padding: 1rem;
             border-radius: 8px;
         }
+        .rules-container li {
+            margin-bottom: 0.8rem;
+        }
         h1, h2 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
@@ -464,8 +467,9 @@
             // Guardar en localStorage
             saveReservations();
 
-            // Mostrar mensaje de confirmación
+            // Mostrar mensaje de confirmación personalizado
             const message = document.getElementById("message");
+            message.innerHTML = `¡Reserva confirmada para ${teacher}!`;
             message.style.display = "block";
 
             // Actualizar el calendario
@@ -595,9 +599,9 @@
                             const reservationDiv = document.createElement('div');
                             reservationDiv.className = `reserved resource-${reservation.resource}`;
                             
-                            // Información de la reserva
+                            // Información de la reserva con recurso en negrita
                             reservationDiv.innerHTML = `
-                                ${reservation.resource}<br>
+                                <strong>${reservation.resource}</strong><br>
                                 <div class="resource-info">
                                     Aula: ${reservation.classroom}<br>
                                     Grupo: ${reservation.group}<br>
