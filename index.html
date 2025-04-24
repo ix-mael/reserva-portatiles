@@ -178,18 +178,18 @@
             height: 20px;
             border-radius: 4px;
         }
-        /* Colores para diferenciar recursos */
+        /* Colores actualizados para diferenciar recursos */
         .resource-AR-111 {
-            background-color: #3498db;
+            background-color: #f9e79f;
         }
         .resource-AR-114 {
-            background-color: #2ecc71;
+            background-color: #ebdef0;
         }
         .resource-ARM-01 {
-            background-color: #e74c3c;
+            background-color: #f2d7d5;
         }
         .resource-ARM-02 {
-            background-color: #9b59b6;
+            background-color: #d5f5e3;
         }
         .resource-info {
             font-size: 0.85rem;
@@ -326,7 +326,7 @@
         currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay() + 1);
         let reservations = [];
 
-        // Datos de ejemplo para las reservas
+        // Datos de ejemplo para las reservas (ahora se usarán solo si no hay datos guardados)
         const sampleReservations = [
             { resource: "AR-111", date: "2025-04-22", time: "8:05-9:00", classroom: "A-111", group: "1A", teacher: "Profesor 1" },
             { resource: "AR-114", date: "2025-04-22", time: "9:00-9:55", classroom: "A-114", group: "2B", teacher: "Profesor 2" },
@@ -337,6 +337,23 @@
             { resource: "ARM-01", date: "2025-04-22", time: "11:20-12:15", classroom: "A-212", group: "1G", teacher: "Profesor 7" },
             { resource: "ARM-02", date: "2025-04-25", time: "8:05-9:00", classroom: "A-213", group: "2A", teacher: "Profesor 8" }
         ];
+
+        // Función para guardar reservas en localStorage
+        function saveReservations() {
+            localStorage.setItem('portatilesReservations', JSON.stringify(reservations));
+        }
+
+        // Función para cargar reservas desde localStorage
+        function loadReservations() {
+            const storedReservations = localStorage.getItem('portatilesReservations');
+            if (storedReservations) {
+                reservations = JSON.parse(storedReservations);
+            } else {
+                // Si no hay reservas guardadas, usar los datos de ejemplo
+                reservations = [...sampleReservations];
+                saveReservations(); // Guardar los datos de ejemplo para futuras cargas
+            }
+        }
 
         // Función para actualizar las opciones de aula según el recurso seleccionado
         function updateClassroomOptions() {
@@ -443,6 +460,9 @@
             // Añadir la nueva reserva
             const newReservation = { resource, date, time, classroom, group, teacher };
             reservations.push(newReservation);
+            
+            // Guardar en localStorage
+            saveReservations();
 
             // Mostrar mensaje de confirmación
             const message = document.getElementById("message");
@@ -566,7 +586,7 @@
                     cell.className = 'cell';
                     
                     // Buscar reservas para esta fecha y horario
-                    const dayReservations = [...reservations, ...sampleReservations].filter(r => 
+                    const dayReservations = reservations.filter(r => 
                         r.date === dateStr && r.time === timeSlot
                     );
                     
@@ -596,8 +616,8 @@
 
         // Inicializar calendario al cargar la página
         window.onload = function() {
-            // Cargar datos de ejemplo
-            reservations = [...sampleReservations];
+            // Cargar reservas guardadas
+            loadReservations();
             
             // Configurar la fecha actual en el selector de fecha
             const dateInput = document.getElementById("date");
