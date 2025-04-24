@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C.F.G. Básico. Reserva de Portátiles</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -32,6 +32,9 @@
         .form-container {
             flex: 2;
             margin-right: 1rem;
+            background-color: #e5e7e9;
+            padding: 1rem;
+            border-radius: 8px;
         }
         .rules-container {
             flex: 1;
@@ -67,36 +70,16 @@
         .form-group button:hover {
             background-color: #005ea6;
         }
-        #calendar {
+        #calendar-container {
             margin-top: 2rem;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-gap: 1px;
-            background-color: #ddd;
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        #calendar .time-slot, #calendar .day {
-            background-color: #0078d7;
-            color: white;
-            text-align: center;
-            padding: 0.5rem;
-            font-weight: bold;
-        }
-        #calendar .slot {
-            background-color: #f4f4f9;
-            text-align: center;
-            padding: 0.5rem;
-            font-size: 0.9rem;
-        }
-        #calendar .reserved {
-            background-color: #0078d7;
-            color: white;
-            font-weight: bold;
-        }
-        .rules-container ol {
-            padding-left: 1.5rem;
-        }
-        .rules-container ol li {
-            margin-bottom: 1rem;
+        #calendar {
+            max-width: 100%;
+            margin: 0 auto;
         }
         .message {
             margin-top: 1rem;
@@ -117,6 +100,8 @@
             display: none;
         }
     </style>
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -125,7 +110,7 @@
     <div class="container">
         <!-- Formulario de Reserva -->
         <div class="form-container">
-            <h1>Realizar una Reserva</h1>
+            <h1>Crear una Reserva</h1>
             <div id="message" class="message">¡Reserva realizada con éxito!</div>
             <div id="error-message" class="error-message"></div>
             <div class="form-group">
@@ -158,6 +143,17 @@
                 <label for="classroom">Aula:</label>
                 <select id="classroom">
                     <option value="" selected disabled>Seleccione un aula</option>
+                    <option value="A-203">A-203</option>
+                    <option value="A-204">A-204</option>
+                    <option value="T-205">T-205</option>
+                    <option value="T-208">T-208</option>
+                    <option value="A-209">A-209</option>
+                    <option value="A-210">A-210</option>
+                    <option value="A-211">A-211</option>
+                    <option value="A-212">A-212</option>
+                    <option value="A-213">A-213</option>
+                    <option value="A-214">A-214</option>
+                    <option value="T-215">T-215</option>
                 </select>
             </div>
             <div class="form-group">
@@ -174,13 +170,6 @@
                     <option value="2D">2D</option>
                     <option value="1E">1E</option>
                     <option value="2E">2E</option>
-                    <option value="1F">1F</option>
-                    <option value="2F">2F</option>
-                    <option value="1G">1G</option>
-                    <option value="2G">2G</option>
-                    <option value="1BAdaptada">1BAdaptada</option>
-                    <option value="2BAdaptada">2BAdaptada</option>
-                    <option value="3BAdaptada">3BAdaptada</option>
                 </select>
             </div>
             <div class="form-group">
@@ -207,34 +196,45 @@
         </div>
     </div>
 
+    <!-- Contenedor del Calendario -->
+    <div id="calendar-container">
+        <h2>Calendario de Reservas</h2>
+        <div id="calendar"></div>
+    </div>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script>
-        function updateClassroomOptions() {
-            const resource = document.getElementById("resource").value;
-            const classroom = document.getElementById("classroom");
-
-            // Limpiar opciones previas.
-            classroom.innerHTML = "";
-
-            if (resource === "AR-111") {
-                classroom.innerHTML = `<option value="A-111" selected>A-111</option>`;
-                classroom.disabled = true;
-            } else if (resource === "AR-114") {
-                classroom.innerHTML = `<option value="A-114" selected>A-114</option>`;
-                classroom.disabled = true;
-            } else if (resource === "ARM-01" || resource === "ARM-02") {
-                const armOptions = [
-                    "A-203", "A-204", "T-205", "T-208", "A-209",
-                    "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"
-                ];
-                armOptions.forEach(aula => {
-                    const option = document.createElement("option");
-                    option.value = aula;
-                    option.textContent = aula;
-                    classroom.appendChild(option);
-                });
-                classroom.disabled = false;
-            }
-        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'Reserva AR-111',
+                        start: '2025-04-24T08:05:00',
+                        color: '#0078d7'
+                    },
+                    {
+                        title: 'Reserva AR-114',
+                        start: '2025-04-25T09:00:00',
+                        color: '#e74c3c'
+                    },
+                    {
+                        title: 'Reserva ARM-01',
+                        start: '2025-04-26T11:20:00',
+                        color: '#2ecc71'
+                    }
+                ]
+            });
+            calendar.render();
+        });
 
         function handleReservation() {
             const resource = document.getElementById("resource").value;
@@ -259,47 +259,20 @@
                 return;
             }
 
-            if (!isValidDate(date)) {
-                errorMessage.style.display = "block";
-                errorMessage.innerHTML = "<p>No se puede reservar para fechas pasadas ni para sábados o domingos.</p>";
-                return;
-            }
-
-            // Mostrar mensaje de confirmación
             const message = document.getElementById("message");
             message.style.display = "block";
 
-            // Ocultar mensaje después de 3 segundos y resetear el formulario
             setTimeout(() => {
                 message.style.display = "none";
                 resetForm();
             }, 3000);
         }
 
-        function isValidDate(date) {
-            const selectedDate = new Date(date);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            // Verificar si la fecha es anterior al día actual
-            if (selectedDate < today) {
-                return false;
-            }
-
-            // Comprobar si es sábado (6) o domingo (0)
-            const dayOfWeek = selectedDate.getDay();
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
-                return false;
-            }
-
-            return true;
-        }
-
         function resetForm() {
             document.getElementById("resource").value = "";
             document.getElementById("date").value = "";
             document.getElementById("time").value = "";
-            document.getElementById("classroom").innerHTML = "<option value='' selected disabled>Seleccione un aula</option>";
+            document.getElementById("classroom").value = "";
             document.getElementById("group").value = "";
             document.getElementById("teacher").value = "";
         }
