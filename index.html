@@ -7,110 +7,30 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-        body {
-            font-family: 'Roboto', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
-        }
-        header {
-            background-color: #5d6d7e;
-            color: white;
-            padding: 1rem;
-            text-align: left;
-        }
-        header h1 {
-               font-size: 2rem;
-        }        
-        .container {
-            display: flex;
-            flex-direction: row;
-            max-width: 1200px;
-            margin: 2rem auto;
-            background: #e5e7e9;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .form-container {
-            flex: 2;
-            margin-right: 1rem;
-        }
-        .rules-container {
-            flex: 1;
-            background: #5d6d7e;
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-        h1, h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        .form-group label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-        .form-group input, .form-group select, .form-group button {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .form-group button {
-            background-color: #0078d7;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .form-group button:hover {
-            background-color: #005ea6;
-        }
+        body { font-family: 'Roboto', Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; }
+        header { background-color: #5d6d7e; color: white; padding: 1rem; text-align: left; }
+        header h1 { font-size: 2rem; }
+        .container { display: flex; flex-direction: row; max-width: 1200px; margin: 2rem auto; background: #e5e7e9; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .form-container { flex: 2; margin-right: 1rem; }
+        .rules-container { flex: 1; background: #5d6d7e; color: white; padding: 1rem; border-radius: 8px; }
+        h1, h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { font-weight: bold; display: block; margin-bottom: 0.5rem; }
+        .form-group input, .form-group select, .form-group button { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
+        .form-group button { background-color: #0078d7; color: white; border: none; cursor: pointer; }
+        .form-group button:hover { background-color: #005ea6; }
+        .message { margin-top: 1rem; padding: 1rem; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; display: none; }
+        .error-message { margin-top: 1rem; padding: 1rem; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px; display: none; }
         /* Calendario semanal */
-        #calendar {
-            margin-top: 2rem;
-            display: grid;
-            grid-template-columns: 100px repeat(5, 1fr);
-            grid-auto-rows: 50px;
-            grid-gap: 1px;
-            background-color: #ddd;
-        }
-        #calendar .time-slot, #calendar .day {
-            background-color: #5d6d7e;
-            color: white;
-            text-align: center;
-            padding: 0.5rem;
-            font-weight: bold;
-        }
-        #calendar .slot {
-            background-color: #f4f4f9;
-            position: relative;
-        }
-        #calendar .slot.reserved {
-            background-color: inherit;
-        }
-        .reserved .reservation-label {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            right: 2px;
-            bottom: 2px;
-            padding: 2px;
-            color: white;
-            font-size: 0.75rem;
-            border-radius: 4px;
-            overflow: hidden;
-        }
+        #calendar { margin-top: 2rem; display: grid; grid-template-columns: 100px repeat(5,1fr); grid-auto-rows: 50px; grid-gap: 1px; background-color: #ddd; }
+        #calendar .time-slot, #calendar .day { background-color: #5d6d7e; color: white; text-align: center; padding: 0.5rem; font-weight: bold; }
+        #calendar .slot { background-color: #f4f4f9; position: relative; }
+        #calendar .slot.reserved { background-color: inherit; }
+        .reserved .reservation-label { position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; padding: 2px; color: white; font-size: 0.75rem; border-radius: 4px; overflow: hidden; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>C.F.G.Básico: Reserva de Portátiles</h1>
-    </header>
+    <header><h1>C.F.G.Básico: Reserva de Portátiles</h1></header>
     <div class="container">
         <div class="form-container">
             <h1>Realizar una Reserva</h1>
@@ -134,21 +54,12 @@
                 <label for="time">Horario:</label>
                 <select id="time">
                     <option value="" selected disabled>Seleccione un intervalo horario</option>
-                    <!-- 30-min intervals -->
-                    <option value="08:00">08:00 - 08:30</option>
-                    <option value="08:30">08:30 - 09:00</option>
-                    <option value="09:00">09:00 - 09:30</option>
-                    <option value="09:30">09:30 - 10:00</option>
-                    <option value="10:00">10:00 - 10:30</option>
-                    <option value="10:30">10:30 - 11:00</option>
-                    <option value="11:00">11:00 - 11:30</option>
-                    <option value="11:30">11:30 - 12:00</option>
-                    <option value="12:00">12:00 - 12:30</option>
-                    <option value="12:30">12:30 - 13:00</option>
-                    <option value="13:00">13:00 - 13:30</option>
-                    <option value="13:30">13:30 - 14:00</option>
-                    <option value="14:00">14:00 - 14:30</option>
-                    <option value="14:30">14:30 - 15:00</option>
+                    <option value="8:05-9:00">8:05 - 9:00</option>
+                    <option value="9:00-9:55">9:00 - 9:55</option>
+                    <option value="9:55-10:50">9:55 - 10:50</option>
+                    <option value="11:20-12:15">11:20 - 12:15</option>
+                    <option value="12:15-13:10">12:15 - 13:10</option>
+                    <option value="13:10-14:05">13:10 - 14:05</option>
                 </select>
             </div>
             <div class="form-group">
@@ -160,7 +71,24 @@
             <div class="form-group">
                 <label for="group">Grupo:</label>
                 <select id="group">
-                    <!-- same group options -->
+                    <option value="" selected disabled>Seleccione un grupo</option>
+                    <option value="1A">1A</option>
+                    <option value="2A">2A</option>
+                    <option value="1B">1B</option>
+                    <option value="2B">2B</option>
+                    <option value="1C">1C</option>
+                    <option value="2C">2C</option>
+                    <option value="1D">1D</option>
+                    <option value="2D">2D</option>
+                    <option value="1E">1E</option>
+                    <option value="2E">2E</option>
+                    <option value="1F">1F</option>
+                    <option value="2F">2F</option>
+                    <option value="1G">1G</option>
+                    <option value="2G">2G</option>
+                    <option value="1BAdaptada">1BAdaptada</option>
+                    <option value="2BAdaptada">2BAdaptada</option>
+                    <option value="3BAdaptada">3BAdaptada</option>
                 </select>
             </div>
             <div class="form-group">
@@ -170,163 +98,78 @@
             <div class="form-group">
                 <button type="button" id="submit" onclick="handleReservation()">Reservar</button>
             </div>
-            <!-- Calendario semanal -->
             <h2>Calendario Semanal</h2>
             <div id="calendar"></div>
         </div>
         <div class="rules-container">
             <h2>Normas para el Profesorado</h2>
             <ol>
-                <!-- existing rules -->
+                <li><strong>Reserva Obligatoria:</strong> Los Armarios deben ser reservados a través de la página de reservas antes de ser utilizados. No se permitirá el uso de portátiles sin reserva previa.</li>
+                <li><strong>Apagar los portátiles:</strong> Al finalizar el uso, los portátiles deben apagarse correctamente para garantizar su buen funcionamiento.</li>
+                <li><strong>Colocarlos en orden:</strong> Los portátiles deben ser devueltos a su lugar correspondiente, organizados según su número asignado.</li>
+                <li><strong>Informar problemas técnicos:</strong> Si el portátil presenta algún problema (pantalla rota, teclas que no funcionan, fallos en el sistema, etc.), informa inmediatamente al equipo de soporte.</li>
+                <li><strong>Comportamiento de los Estudiantes con los Portátiles:</strong> Los profesores deben supervisar constantemente a los estudiantes cuando utilicen los portátiles en clase, garantizando que los dispositivos sean utilizados de manera adecuada.</li>
+                <li><strong>Devolución Puntual:</strong> Los portátiles deben ser devueltos a tiempo en el armario correspondiente, apagados correctamente y sin programas abiertos.</li>
             </ol>
+            <p>Estas normas son esenciales para mantener el orden y la funcionalidad de los equipos. ¡Gracias por tu colaboración!</p>
         </div>
     </div>
     <script>
-        // Resource colors
-        const resourceColors = {
-            'AR-111': '#e74c3c',
-            'AR-114': '#3498db',
-            'ARM-01': '#2ecc71',
-            'ARM-02': '#f1c40f'
-        };
-        // Store reservations
+        const resourceColors = { 'AR-111':'#e74c3c','AR-114':'#3498db','ARM-01':'#2ecc71','ARM-02':'#f1c40f' };
         const reservations = [];
-        // Time slots
-        const timeSlots = [
-            '08:00','08:30','09:00','09:30','10:00','10:30',
-            '11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30'
-        ];
-        // Render calendar grid
+        const timeSlots = ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30'];
         function renderCalendar() {
-            const calendar = document.getElementById('calendar');
-            calendar.innerHTML = '';
-            // Header row
-            calendar.appendChild(document.createElement('div')); // empty
-            const startDate = document.getElementById('date').value ? new Date(document.getElementById('date').value) : new Date();
-            // get Monday
-            const day = startDate.getDay();
-            const diff = startDate.getDate() - day + (day === 0 ? -6 : 1);
-            const monday = new Date(startDate.setDate(diff));
-            for (let i=0;i<5;i++){
-                const d = new Date(monday);
-                d.setDate(monday.getDate()+i);
-                const cell = document.createElement('div');
-                cell.className = 'day';
-                cell.textContent = d.toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: '2-digit' });
-                cell.dataset.date = d.toISOString().split('T')[0];
-                calendar.appendChild(cell);
-            }
-            // Time rows
-            timeSlots.forEach(time => {
-                // time label
-                const tcell = document.createElement('div');
-                tcell.className = 'time-slot';
-                tcell.textContent = time;
-                calendar.appendChild(tcell);
-                for (let i=0;i<5;i++){
-                    const d = new Date(monday);
-                    d.setDate(monday.getDate()+i);
-                    const dateStr = d.toISOString().split('T')[0];
-                    const cell = document.createElement('div');
-                    cell.className = 'slot';
-                    cell.id = `slot-${dateStr}-${time}`;
-                    calendar.appendChild(cell);
-                }
-            });
+            const cal=document.getElementById('calendar');cal.innerHTML='';
+            cal.appendChild(document.createElement('div'));
+            let sd=new Date(document.getElementById('date').value||new Date());
+            const d=sd.getDay();const diff=sd.getDate()-d+(d===0?-6:1);
+            const monday=new Date(sd.setDate(diff));
+            for(let i=0;i<5;i++){const dd=new Date(monday);dd.setDate(monday.getDate()+i);
+                const cell=document.createElement('div');cell.className='day';
+                cell.textContent=dd.toLocaleDateString('es-ES',{weekday:'short',day:'2-digit',month:'2-digit'});
+                cell.dataset.date=dd.toISOString().split('T')[0];cal.appendChild(cell);}            
+            timeSlots.forEach(t=>{const tc=document.createElement('div');tc.className='time-slot';tc.textContent=t;cal.appendChild(tc);
+                for(let i=0;i<5;i++){const dd=new Date(monday);dd.setDate(monday.getDate()+i);
+                    const ds=dd.toISOString().split('T')[0];const cell=document.createElement('div');
+                    cell.className='slot';cell.id=`slot-${ds}-${t}`;cal.appendChild(cell);} });
             renderReservations();
         }
-        // Render reservations into calendar
-        function renderReservations() {
-            // clear previous
-            document.querySelectorAll('#calendar .slot').forEach(c => c.innerHTML='');
-            reservations.forEach(res => {
-                const id = `slot-${res.date}-${res.time}`;
-                const cell = document.getElementById(id);
-                if(cell) {
-                    cell.classList.add('reserved');
-                    const label = document.createElement('div');
-                    label.className = 'reservation-label';
-                    label.style.backgroundColor = resourceColors[res.resource] || '#000';
-                    label.textContent = `${res.resource} (${res.teacher})`;
-                    cell.appendChild(label);
-                }
-            });
+        function renderReservations(){
+            document.querySelectorAll('#calendar .slot').forEach(c=>c.innerHTML='');
+            reservations.forEach(r=>{const id=`slot-${r.date}-${r.time}`;const c=document.getElementById(id);
+                if(c){c.classList.add('reserved');const l=document.createElement('div');l.className='reservation-label';
+                    l.style.backgroundColor=resourceColors[r.resource]||'#000';l.textContent=`${r.resource} (${r.teacher})`;c.appendChild(l);} });
         }
-        // Handle form submission
-        function handleReservation() {
-            const resource = document.getElementById('resource').value;
-            const date = document.getElementById('date').value;
-            const time = document.getElementById('time').value;
-            const classroom = document.getElementById('classroom').value;
-            const group = document.getElementById('group').value;
-            const teacher = document.getElementById('teacher').value;
-            const errorMessage = document.getElementById('error-message');
-            errorMessage.style.display = 'none';
-            errorMessage.innerHTML = '';
-            if (!resource || !date || !time || !classroom || !group || !teacher) {
-                errorMessage.style.display = 'block';
-                if (!resource) errorMessage.innerHTML += "<p>El campo 'Recurso' es obligatorio.</p>";
-                if (!date) errorMessage.innerHTML += "<p>El campo 'Fecha' es obligatorio.</p>";
-                if (!time) errorMessage.innerHTML += "<p>El campo 'Horario' es obligatorio.</p>";
-                if (!classroom) errorMessage.innerHTML += "<p>El campo 'Aula' es obligatorio.</p>";
-                if (!group) errorMessage.innerHTML += "<p>El campo 'Grupo' es obligatorio.</p>";
-                if (!teacher) errorMessage.innerHTML += "<p>El campo 'Profesor' es obligatorio.</p>";
-                return;
-            }
-            // Date validity
-            const selectedDate = new Date(date);
-            const today = new Date(); today.setHours(0,0,0,0);
-            const dayOfWeek = selectedDate.getDay();
-            if (selectedDate < today || dayOfWeek === 0 || dayOfWeek === 6) {
-                errorMessage.style.display = 'block';
-                errorMessage.innerHTML = "<p>No se puede reservar para fechas pasadas ni fines de semana.</p>";
-                return;
-            }
-            // Save reservation
-            reservations.push({resource,date,time,teacher,group,classroom});
-            renderReservations();
-            // Confirmation
-            const message = document.getElementById('message');
-            message.style.display = 'block';
-            setTimeout(() => { message.style.display = 'none'; resetForm(); }, 3000);
+        function handleReservation(){
+            const res=document.getElementById('resource').value;const dt=document.getElementById('date').value;
+            const t=document.getElementById('time').value;const cl=document.getElementById('classroom').value;
+            const gr=document.getElementById('group').value;const te=document.getElementById('teacher').value;
+            const err=document.getElementById('error-message');err.style.display='none';err.innerHTML='';
+            if(!res||!dt||!t||!cl||!gr||!te){err.style.display='block';
+                if(!res) err.innerHTML+="<p>El campo 'Recurso' es obligatorio.</p>";
+                if(!dt) err.innerHTML+="<p>El campo 'Fecha' es obligatorio.</p>";
+                if(!t) err.innerHTML+="<p>El campo 'Horario' es obligatorio.</p>";
+                if(!cl) err.innerHTML+="<p>El campo 'Aula' es obligatorio.</p>";
+                if(!gr) err.innerHTML+="<p>El campo 'Grupo' es obligatorio.</p>";
+                if(!te) err.innerHTML+="<p>El campo 'Profesor' es obligatorio.</p>";
+                return;}
+            const sd=new Date(dt);const today=new Date();today.setHours(0,0,0,0);
+            const dow=sd.getDay();if(sd<today||dow===0||dow===6){err.style.display='block';err.innerHTML="<p>No se puede reservar para fechas pasadas ni fines de semana.</p>";return;}
+            reservations.push({resource:res,date:dt,time:t,teacher:te,group:gr,classroom:cl});
+            renderReservations();const msg=document.getElementById('message');msg.style.display='block';setTimeout(()=>{msg.style.display='none';resetForm();},3000);
         }
-        function resetForm() {
-            document.getElementById('resource').value = '';
-            document.getElementById('date').value = '';
-            document.getElementById('time').value = '';
-            document.getElementById('classroom').innerHTML = "<option value='' selected disabled>Seleccione un aula</option>";
-            document.getElementById('group').value = '';
-            document.getElementById('teacher').value = '';
+        function resetForm(){
+            document.getElementById('resource').value='';document.getElementById('date').value='';
+            document.getElementById('time').value='';document.getElementById('classroom').innerHTML="<option value='' selected disabled>Seleccione un aula</option>";
+            document.getElementById('group').value='';document.getElementById('teacher').value='';
         }
-        function updateClassroomOptions() {
-            const resource = document.getElementById("resource").value;
-            const classroom = document.getElementById("classroom");
-            classroom.innerHTML = "";
-            if (resource === "AR-111") {
-                classroom.innerHTML = `<option value="A-111" selected>A-111</option>`;
-                classroom.disabled = true;
-            } else if (resource === "AR-114") {
-                classroom.innerHTML = `<option value="A-114" selected>A-114</option>`;
-                classroom.disabled = true;
-            } else if (resource === "ARM-01" || resource === "ARM-02") {
-                const armOptions = [
-                    "A-203", "A-204", "T-205", "T-208", "A-209",
-                    "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"
-                ];
-                armOptions.forEach(aula => {
-                    const option = document.createElement("option");
-                    option.value = aula;
-                    option.textContent = aula;
-                    classroom.appendChild(option);
-                });
-                classroom.disabled = false;
-            }
+        function updateClassroomOptions(){
+            const res=document.getElementById("resource").value;const cls=document.getElementById("classroom");cls.innerHTML='';
+            if(res==="AR-111"){cls.innerHTML=`<option value="A-111" selected>A-111</option>`;cls.disabled=true;} 
+            else if(res==="AR-114"){cls.innerHTML=`<option value="A-114" selected>A-114</option>`;cls.disabled=true;} 
+            else if(res==="ARM-01"||res==="ARM-02"){const opts=["A-203","A-204","T-205","T-208","A-209","A-210","A-211","A-212","A-213","A-214","T-215"];opts.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;cls.appendChild(o);});cls.disabled=false;}
         }
-        // Initialize calendar on load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('date').addEventListener('change', renderCalendar);
-            renderCalendar();
-        });
+        document.addEventListener('DOMContentLoaded',()=>{document.getElementById('date').addEventListener('change',renderCalendar);renderCalendar();});
     </script>
 </body>
 </html>
