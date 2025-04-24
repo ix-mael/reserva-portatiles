@@ -259,6 +259,12 @@
                 return;
             }
 
+            if (!isValidDate(date)) {
+                errorMessage.style.display = "block";
+                errorMessage.innerHTML = "<p>No se puede reservar para fechas pasadas ni para sábados o domingos.</p>";
+                return;
+            }
+
             // Mostrar mensaje de confirmación
             const message = document.getElementById("message");
             message.style.display = "block";
@@ -268,6 +274,25 @@
                 message.style.display = "none";
                 resetForm();
             }, 3000);
+        }
+
+        function isValidDate(date) {
+            const selectedDate = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Verificar si la fecha es anterior al día actual
+            if (selectedDate < today) {
+                return false;
+            }
+
+            // Comprobar si es sábado (6) o domingo (0)
+            const dayOfWeek = selectedDate.getDay();
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                return false;
+            }
+
+            return true;
         }
 
         function resetForm() {
