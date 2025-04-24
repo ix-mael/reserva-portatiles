@@ -102,7 +102,7 @@
             <h1>Crear una Reserva</h1>
             <div class="form-group">
                 <label for="resource">Recurso:</label>
-                <select id="resource">
+                <select id="resource" onchange="updateClassroomOptions()">
                     <option value="" selected disabled>Seleccione un recurso</option>
                     <option value="AR-111">AR-111</option>
                     <option value="AR-114">AR-114</option>
@@ -180,5 +180,35 @@
     <div id="calendar">
         <!-- Aquí se generará dinámicamente el calendario -->
     </div>
+
+    <script>
+        function updateClassroomOptions() {
+            const resource = document.getElementById("resource").value;
+            const classroom = document.getElementById("classroom");
+
+            // Limpiar opciones previas.
+            classroom.innerHTML = "";
+
+            if (resource === "AR-111") {
+                classroom.innerHTML = `<option value="A-111" selected>A-111</option>`;
+                classroom.disabled = true;
+            } else if (resource === "AR-114") {
+                classroom.innerHTML = `<option value="A-114" selected>A-114</option>`;
+                classroom.disabled = true;
+            } else if (resource === "ARM-01" || resource === "ARM-02") {
+                const armOptions = [
+                    "A-203", "A-204", "T-205", "T-208", "A-209",
+                    "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"
+                ];
+                armOptions.forEach(aula => {
+                    const option = document.createElement("option");
+                    option.value = aula;
+                    option.textContent = aula;
+                    classroom.appendChild(option);
+                });
+                classroom.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
