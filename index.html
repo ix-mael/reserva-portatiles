@@ -70,37 +70,6 @@
         .form-group button:hover {
             background-color: #005ea6;
         }
-        #calendar {
-            margin-top: 2rem;
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-gap: 1px;
-            background-color: #ddd;
-        }
-        #calendar .time-slot, #calendar .day {
-            background-color: #0078d7;
-            color: white;
-            text-align: center;
-            padding: 0.5rem;
-            font-weight: bold;
-        }
-        #calendar .slot {
-            background-color: #f4f4f9;
-            text-align: center;
-            padding: 0.5rem;
-            font-size: 0.9rem;
-        }
-        #calendar .reserved {
-            background-color: #0078d7;
-            color: white;
-            font-weight: bold;
-        }
-        .rules-container ol {
-            padding-left: 1.5rem;
-        }
-        .rules-container ol li {
-            margin-bottom: 1rem;
-        }
         .message {
             margin-top: 1rem;
             padding: 1rem;
@@ -118,6 +87,113 @@
             border: 1px solid #f5c6cb;
             border-radius: 4px;
             display: none;
+        }
+        
+        /* Estilos para el calendario de reservas */
+        .calendar-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: #e5e7e9;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .calendar-container h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .calendar-controls {
+            display: flex;
+            gap: 10px;
+        }
+        .calendar-controls button {
+            padding: 0.5rem 1rem;
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .calendar-controls button:hover {
+            background-color: #005ea6;
+        }
+        .week-info {
+            font-weight: bold;
+            font-size: 1.1rem;
+            align-self: center;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: 100px repeat(5, 1fr);
+            gap: 1px;
+            background-color: #ddd;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .calendar-days .day-header {
+            background-color: #5d6d7e;
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: bold;
+        }
+        .calendar-days .time-slot {
+            background-color: #5d6d7e;
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: bold;
+        }
+        .calendar-days .cell {
+            background-color: #f4f4f9;
+            min-height: 40px;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+        }
+        .calendar-days .cell.reserved {
+            color: white;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .resource-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        /* Colores para diferenciar recursos */
+        .resource-AR-111 {
+            background-color: #3498db;
+        }
+        .resource-AR-114 {
+            background-color: #2ecc71;
+        }
+        .resource-ARM-01 {
+            background-color: #e74c3c;
+        }
+        .resource-ARM-02 {
+            background-color: #9b59b6;
+        }
+        .resource-info {
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
         }
     </style>
 </head>
@@ -143,7 +219,7 @@
             </div>
             <div class="form-group">
                 <label for="date">Fecha:</label>
-                <input type="date" id="date">
+                <input type="date" id="date" onchange="updateCalendar()">
             </div>
             <div class="form-group">
                 <label for="time">Horario:</label>
@@ -210,12 +286,64 @@
         </div>
     </div>
 
+    <!-- Calendario de Reservas -->
+    <div class="calendar-container">
+        <h2>Calendario de Reservas</h2>
+        <div class="calendar-header">
+            <div class="calendar-controls">
+                <button onclick="previousWeek()">Semana Anterior</button>
+                <button onclick="nextWeek()">Semana Siguiente</button>
+            </div>
+            <div class="week-info" id="week-info">Semana: 22-26 Abril 2025</div>
+        </div>
+        <div class="calendar-days" id="calendar-grid">
+            <!-- El calendario se generará dinámicamente con JavaScript -->
+        </div>
+        <div class="resource-legend">
+            <div class="legend-item">
+                <div class="legend-color resource-AR-111"></div>
+                <span>AR-111</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color resource-AR-114"></div>
+                <span>AR-114</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color resource-ARM-01"></div>
+                <span>ARM-01</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color resource-ARM-02"></div>
+                <span>ARM-02</span>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Variables globales para el calendario
+        let currentWeekStart = new Date();
+        // Ajustamos la fecha al lunes de la semana actual
+        currentWeekStart.setDate(currentWeekStart.getDate() - currentWeekStart.getDay() + 1);
+        let reservations = [];
+
+        // Datos de ejemplo para las reservas
+        const sampleReservations = [
+            { resource: "AR-111", date: "2025-04-22", time: "8:05-9:00", classroom: "A-111", group: "1A", teacher: "Profesor 1" },
+            { resource: "AR-114", date: "2025-04-22", time: "9:00-9:55", classroom: "A-114", group: "2B", teacher: "Profesor 2" },
+            { resource: "ARM-01", date: "2025-04-23", time: "9:55-10:50", classroom: "A-210", group: "1C", teacher: "Profesor 3" },
+            { resource: "ARM-02", date: "2025-04-24", time: "11:20-12:15", classroom: "A-211", group: "2D", teacher: "Profesor 4" },
+            { resource: "AR-111", date: "2025-04-24", time: "12:15-13:10", classroom: "A-111", group: "1E", teacher: "Profesor 5" },
+            { resource: "AR-114", date: "2025-04-25", time: "13:10-14:05", classroom: "A-114", group: "2F", teacher: "Profesor 6" },
+            { resource: "ARM-01", date: "2025-04-22", time: "11:20-12:15", classroom: "A-212", group: "1G", teacher: "Profesor 7" },
+            { resource: "ARM-02", date: "2025-04-25", time: "8:05-9:00", classroom: "A-213", group: "2A", teacher: "Profesor 8" }
+        ];
+
+        // Función para actualizar las opciones de aula según el recurso seleccionado
         function updateClassroomOptions() {
             const resource = document.getElementById("resource").value;
             const classroom = document.getElementById("classroom");
 
-            // Limpiar opciones previas.
+            // Limpiar opciones previas
             classroom.innerHTML = "";
 
             if (resource === "AR-111") {
@@ -229,6 +357,16 @@
                     "A-203", "A-204", "T-205", "T-208", "A-209",
                     "A-210", "A-211", "A-212", "A-213", "A-214", "T-215"
                 ];
+                
+                // Opción por defecto
+                const defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.textContent = "Seleccione un aula";
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                classroom.appendChild(defaultOption);
+                
+                // Agregar opciones de aulas
                 armOptions.forEach(aula => {
                     const option = document.createElement("option");
                     option.value = aula;
@@ -239,6 +377,27 @@
             }
         }
 
+        // Validar fecha
+        function isValidDate(date) {
+            const selectedDate = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Verificar si la fecha es anterior al día actual
+            if (selectedDate < today) {
+                return false;
+            }
+
+            // Comprobar si es sábado (6) o domingo (0)
+            const dayOfWeek = selectedDate.getDay();
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Función para manejar la reserva
         function handleReservation() {
             const resource = document.getElementById("resource").value;
             const date = document.getElementById("date").value;
@@ -268,9 +427,29 @@
                 return;
             }
 
+            // Verificar si ya existe una reserva para ese recurso, fecha y hora
+            const resourceConflict = reservations.find(r => 
+                r.resource === resource && 
+                r.date === date && 
+                r.time === time
+            );
+
+            if (resourceConflict) {
+                errorMessage.style.display = "block";
+                errorMessage.innerHTML = "<p>Ya existe una reserva para este recurso en esta fecha y horario.</p>";
+                return;
+            }
+
+            // Añadir la nueva reserva
+            const newReservation = { resource, date, time, classroom, group, teacher };
+            reservations.push(newReservation);
+
             // Mostrar mensaje de confirmación
             const message = document.getElementById("message");
             message.style.display = "block";
+
+            // Actualizar el calendario
+            updateCalendar();
 
             // Ocultar mensaje después de 3 segundos y resetear el formulario
             setTimeout(() => {
@@ -279,25 +458,7 @@
             }, 3000);
         }
 
-        function isValidDate(date) {
-            const selectedDate = new Date(date);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            // Verificar si la fecha es anterior al día actual
-            if (selectedDate < today) {
-                return false;
-            }
-
-            // Comprobar si es sábado (6) o domingo (0)
-            const dayOfWeek = selectedDate.getDay();
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
-                return false;
-            }
-
-            return true;
-        }
-
+        // Función para resetear el formulario
         function resetForm() {
             document.getElementById("resource").value = "";
             document.getElementById("date").value = "";
@@ -306,6 +467,146 @@
             document.getElementById("group").value = "";
             document.getElementById("teacher").value = "";
         }
+
+        // Función para obtener el texto de la semana actual
+        function getWeekText(weekStart) {
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekStart.getDate() + 4); // Hasta el viernes
+
+            const formatDate = (date) => {
+                return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+            };
+
+            return `Semana: ${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+        }
+
+        // Array de meses en español
+        const months = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+
+        // Array de días de la semana en español
+        const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+
+        // Horarios disponibles
+        const timeSlots = [
+            "8:05-9:00", "9:00-9:55", "9:55-10:50", 
+            "11:20-12:15", "12:15-13:10", "13:10-14:05"
+        ];
+
+        // Función para ir a la semana anterior
+        function previousWeek() {
+            currentWeekStart.setDate(currentWeekStart.getDate() - 7);
+            updateCalendar();
+        }
+
+        // Función para ir a la semana siguiente
+        function nextWeek() {
+            currentWeekStart.setDate(currentWeekStart.getDate() + 7);
+            updateCalendar();
+        }
+
+        // Función para convertir fecha a formato YYYY-MM-DD
+        function formatDate(date) {
+            const d = new Date(date);
+            let month = '' + (d.getMonth() + 1);
+            let day = '' + d.getDate();
+            const year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        // Función para actualizar el calendario
+        function updateCalendar() {
+            const calendarGrid = document.getElementById("calendar-grid");
+            const weekInfo = document.getElementById("week-info");
+            
+            // Actualizar texto de la semana
+            weekInfo.textContent = getWeekText(currentWeekStart);
+            
+            // Limpiar el calendario
+            calendarGrid.innerHTML = '';
+            
+            // Crear encabezado de horario
+            const timeHeader = document.createElement('div');
+            timeHeader.className = 'day-header';
+            timeHeader.textContent = 'Horario';
+            calendarGrid.appendChild(timeHeader);
+            
+            // Crear encabezados de los días
+            for (let i = 0; i < 5; i++) {
+                const dayDate = new Date(currentWeekStart);
+                dayDate.setDate(currentWeekStart.getDate() + i);
+                
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = `${days[i]} ${dayDate.getDate()}/${dayDate.getMonth() + 1}`;
+                calendarGrid.appendChild(dayHeader);
+            }
+            
+            // Crear filas para cada intervalo horario
+            timeSlots.forEach(timeSlot => {
+                // Crear celda para el horario
+                const timeCell = document.createElement('div');
+                timeCell.className = 'time-slot';
+                timeCell.textContent = timeSlot;
+                calendarGrid.appendChild(timeCell);
+                
+                // Crear celdas para cada día
+                for (let i = 0; i < 5; i++) {
+                    const cellDate = new Date(currentWeekStart);
+                    cellDate.setDate(currentWeekStart.getDate() + i);
+                    const dateStr = formatDate(cellDate);
+                    
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    
+                    // Buscar reservas para esta fecha y horario
+                    const dayReservations = [...reservations, ...sampleReservations].filter(r => 
+                        r.date === dateStr && r.time === timeSlot
+                    );
+                    
+                    if (dayReservations.length > 0) {
+                        dayReservations.forEach(reservation => {
+                            const reservationDiv = document.createElement('div');
+                            reservationDiv.className = `reserved resource-${reservation.resource}`;
+                            
+                            // Información de la reserva
+                            reservationDiv.innerHTML = `
+                                ${reservation.resource}<br>
+                                <div class="resource-info">
+                                    Aula: ${reservation.classroom}<br>
+                                    Grupo: ${reservation.group}<br>
+                                    Prof: ${reservation.teacher}
+                                </div>
+                            `;
+                            
+                            cell.appendChild(reservationDiv);
+                        });
+                    }
+                    
+                    calendarGrid.appendChild(cell);
+                }
+            });
+        }
+
+        // Inicializar calendario al cargar la página
+        window.onload = function() {
+            // Cargar datos de ejemplo
+            reservations = [...sampleReservations];
+            
+            // Configurar la fecha actual en el selector de fecha
+            const dateInput = document.getElementById("date");
+            const today = new Date();
+            dateInput.value = formatDate(today);
+            
+            // Mostrar el calendario
+            updateCalendar();
+        };
     </script>
 </body>
 </html>
